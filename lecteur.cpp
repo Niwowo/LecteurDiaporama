@@ -49,13 +49,13 @@ void Lecteur::chargerDiaporama()
      // trier le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
      // A FAIRE
 
-    for (unsigned int ici = nbImages(); ici >= 1; ++ici) {
-        for (unsigned int i = 0; i < ici; ++i) {
-            if (_diaporama[i]>_diaporama[i+1]){
-                Image *copie;
-                copie = _diaporama[i];
-                _diaporama[i] = _diaporama[i+1];
-                _diaporama[i+1] = copie;
+    int n = _diaporama.size();
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (_diaporama[j]->getRang() > _diaporama[j+1]->getRang()) {
+                Image* temp = _diaporama[j];
+                _diaporama[j] = _diaporama[j+1];
+                _diaporama[j+1] = temp;
             }
         }
     }
@@ -90,7 +90,23 @@ void Lecteur::afficher()
      * 1) vide (si num. de diaporama = 0) OU BIEN  numéro de diaporama affiché
      * 2) Si un diaporama courant est chargé (num. de diaporama > 0), affiche l'image courante OU BIEN 'diaporama vide'
      *     si ce diaporama n'a aucun image */
-    if (_posImageCourante == 0)
+    if (numDiaporamaCourant() == 0){
+     cout << "Lecteur vide" << endl;
+    }
+    else
+    {
+     if (nbImages() > 0)
+     {
+            cout << "Image courante : " << endl;
+            _diaporama[_posImageCourante]->afficher();
+     }
+     else
+     {
+            cout << "Diaporama vide" << endl;
+
+     }
+    }
+
 }
 
 unsigned int Lecteur::nbImages()
