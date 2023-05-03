@@ -6,6 +6,7 @@ LecteurVue::LecteurVue(QWidget *parent)
     , ui(new Ui::LecteurVue)
 {
     ui->setupUi(this);
+    connect()
 }
 
 LecteurVue::~LecteurVue()
