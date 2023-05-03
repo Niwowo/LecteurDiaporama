@@ -2,6 +2,7 @@
 #define LECTEURVUE_H
 
 #include <QMainWindow>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LecteurVue; }
@@ -17,5 +18,12 @@ public:
 
 private:
     Ui::LecteurVue *ui;
+
+private slots:
+    void passerAuSuivant();
+    void passerAuPrecedent();
+    void lecture();
+    void pause();
+    void choisirCategorie();
 };
 #endif // LECTEURVUE_H
