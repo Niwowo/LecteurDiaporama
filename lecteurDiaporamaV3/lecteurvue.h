@@ -6,6 +6,7 @@
 #include "lecteur.h"
 #include <QWidget>
 #include <vector>
+#include <QTimer>
 
 typedef std::vector<Image*> Diaporama;
 
@@ -20,12 +21,15 @@ class LecteurVue : public QMainWindow
 public:
     LecteurVue(QWidget *parent = nullptr);
     ~LecteurVue();
+    QTimer *timer;
 
 private:
     Ui::LecteurVue *ui;
     Lecteur _lecteur;
 
+
 private slots:
+    void modeAuto();
     void chargerDiaporama();
     void viderDiaporama();
     void vitesseX0_5();

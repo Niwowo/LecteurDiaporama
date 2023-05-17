@@ -17,6 +17,8 @@ LecteurVue::LecteurVue(QWidget *parent)
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
 
+    timer->setInterval(5000);
+
     connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
     connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
@@ -94,12 +96,17 @@ void LecteurVue::aProposDe()
     qDebug() << "J'affiche le A Propos de" << Qt::endl;
     QMessageBox *msgBox = new QMessageBox();
     msgBox->setStandardButtons(QMessageBox::Ok);
-    msgBox->setText("Version de l'application : v2 \nDate de création : 27/04/2023 \nAuteurs : BURASOVITCH Ewan, ELDUAYEN Néo, ZAZA Souleymen");
+    msgBox->setText("Version de l'application : v3 \nDate de création : 27/04/2023 \nAuteurs : BURASOVITCH Ewan, ELDUAYEN Néo, ZAZA Souleymen");
     msgBox->exec();
 }
 
 void LecteurVue::passerAuSuivant()
 {
+    if(timer->isActive())
+    {
+        timer->stop();
+        timer->~QTimer();
+    }
     qDebug() <<  "Je passe à la diapositive suivante" << Qt::endl;
     _lecteur.avancer();
     Image *image = _lecteur.imageCourante();
@@ -117,6 +124,11 @@ void LecteurVue::passerAuSuivant()
 
 void LecteurVue::passerAuPrecedent()
 {
+    if(timer->isActive())
+    {
+        timer->stop();
+        timer->~QTimer();
+    }
     qDebug() <<  "Je passe à la diapositive précédente" << Qt::endl;
     _lecteur.reculer();
     Image *image = _lecteur.imageCourante();
@@ -132,13 +144,29 @@ void LecteurVue::passerAuPrecedent()
     ui->statusbar->showMessage(imageAffichee);
 }
 
+void LecteurVue::modeAuto()
+{
+    passerAuSuivant();
+}
+
 void LecteurVue::lecture()
 {
-    qDebug() <<  "je lance la lecture" << Qt::endl;
+    if(timer->isActive())
+    {
+        qDebug() << "Le timer est  déjà lancé";
+    }
+    else
+    {
+        QTimer *timer = new QTimer;
+        qDebug() <<  "je lance la lecture" << Qt::endl;
+        timer->connect(timer, SIGNAL(timeout()), this, SLOT(modeAuto()));
+        timer->start();
+    }
 }
 
 void LecteurVue::pause()
 {
+    timer->~QTimer();
     qDebug() <<  "je met en pause" << Qt::endl;
 }
 
