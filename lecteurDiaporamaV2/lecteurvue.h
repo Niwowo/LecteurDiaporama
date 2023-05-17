@@ -24,8 +24,6 @@ public:
 private:
     Ui::LecteurVue *ui;
     Lecteur _lecteur;
-    unsigned _numDiaporamaCourant;   // numéro du diaporama courant, par défaut 0
-    Diaporama _diaporama;            // pointeurs vers les images du diaporama
 
 private slots:
     void chargerDiaporama();

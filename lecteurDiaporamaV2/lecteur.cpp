@@ -54,7 +54,7 @@ void Lecteur::chargerDiaporama()
     Image* imageACharger;
     imageACharger = new Image(3, "personne", "Alice", ":/cartesDisney/images/cartesDisney/Disney_2.gif");
     _diaporama.push_back(imageACharger);
-    imageACharger = new Image(2, "animal", "D", ":/cartesDisney/images/cartesDisney/Disney_1.gif");
+    imageACharger = new Image(2, "animal", "Chiengue", ":/cartesDisney/images/cartesDisney/Disney_1.gif");
     _diaporama.push_back(imageACharger);
     imageACharger = new Image(4, "animal", "Bambi", ":/cartesDisney/images/cartesDisney/Disney_3.gif");
     _diaporama.push_back(imageACharger);

@@ -16,6 +16,7 @@ LecteurVue::LecteurVue(QWidget *parent)
     ui->pLecture->setEnabled(false);
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
+
     connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
     connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
@@ -39,7 +40,17 @@ void LecteurVue::chargerDiaporama()
 {
     qDebug() << "Je charge le diaporama" << Qt::endl;
     _lecteur.changerDiaporama(1);
-    ui->labelImage->setPixmap(QPixmap(":/cartesDisney/images/cartesDisney/Disney_0.gif"));
+    Image *image = _lecteur.imageCourante();
+    QString imageAffichee = QString::fromStdString(image->getChemin());
+    QString imageCategorie = QString::fromStdString(image->getCategorie());
+    QString imageTitre = QString::fromStdString(image->getTitre());
+    int imageRang = image->getRang();
+
+    ui->lTitreImage->setText(imageTitre);
+    ui->lCategorie->setText(imageCategorie);
+    ui->lRang->setNum(imageRang);
+    ui->labelImage->setPixmap(QPixmap(imageAffichee));
+    ui->statusbar->showMessage(imageAffichee);
     ui->pDroite->setEnabled(true);
     ui->pGauche->setEnabled(true);
     ui->pLecture->setEnabled(true);
@@ -49,6 +60,11 @@ void LecteurVue::chargerDiaporama()
 
 void LecteurVue::viderDiaporama()
 {
+    ui->lTitreImage->setText("Titre de l'image");
+    ui->lCategorie->setText("");
+    ui->labelImage->setPixmap(QPixmap(""));
+    ui->lRang->setNum(0);
+    ui->statusbar->showMessage("");
     qDebug() << "J'enlève le diaporama" << Qt::endl;
     _lecteur.changerDiaporama(0);
     ui->pDroite->setEnabled(false);
@@ -56,8 +72,6 @@ void LecteurVue::viderDiaporama()
     ui->pLecture->setEnabled(false);
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
-    ui->labelImage->setPixmap(QPixmap("-----"));
-
 }
 
 void LecteurVue::vitesseX0_5()
@@ -87,23 +101,35 @@ void LecteurVue::aProposDe()
 void LecteurVue::passerAuSuivant()
 {
     qDebug() <<  "Je passe à la diapositive suivante" << Qt::endl;
-//    QString nomImage = ":/cartesDisney/images/cartesDisney/Disney_";
-//    nomImage.append(QString::number(_posImageCourante));
-//    nomImage.append(".gif");
-//    qDebug() << nomImage;
-//    ui->labelImage->setPixmap(QPixmap(nomImage));
     _lecteur.avancer();
+    Image *image = _lecteur.imageCourante();
+    QString imageAffichee = QString::fromStdString(image->getChemin());
+    QString imageCategorie = QString::fromStdString(image->getCategorie());
+    QString imageTitre = QString::fromStdString(image->getTitre());
+    int imageRang = image->getRang();
+
+    ui->lTitreImage->setText(imageTitre);
+    ui->lCategorie->setText(imageCategorie);
+    ui->lRang->setNum(imageRang);
+    ui->labelImage->setPixmap(QPixmap(imageAffichee));
+    ui->statusbar->showMessage(imageAffichee);
 }
 
 void LecteurVue::passerAuPrecedent()
 {
     qDebug() <<  "Je passe à la diapositive précédente" << Qt::endl;
-//    QString nomImage = ":/cartesDisney/images/cartesDisney/Disney_";
-//    nomImage.append(QString::number(_lecteur.imageCourante()));
-//    nomImage.append(".gif");
-//    qDebug() << nomImage;
-//    ui->labelImage->setPixmap(QPixmap(nomImage));
     _lecteur.reculer();
+    Image *image = _lecteur.imageCourante();
+    QString imageAffichee = QString::fromStdString(image->getChemin());
+    QString imageCategorie = QString::fromStdString(image->getCategorie());
+    QString imageTitre = QString::fromStdString(image->getTitre());
+    int imageRang = image->getRang();
+
+    ui->lTitreImage->setText(imageTitre);
+    ui->lCategorie->setText(imageCategorie);
+    ui->lRang->setNum(imageRang);
+    ui->labelImage->setPixmap(QPixmap(imageAffichee));
+    ui->statusbar->showMessage(imageAffichee);
 }
 
 void LecteurVue::lecture()
