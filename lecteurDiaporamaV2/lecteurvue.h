@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "image.h"
+#include "lecteur.h"
 #include <QWidget>
 #include <vector>
 
@@ -22,16 +23,9 @@ public:
 
 private:
     Ui::LecteurVue *ui;
+    Lecteur _lecteur;
     unsigned _numDiaporamaCourant;   // numéro du diaporama courant, par défaut 0
     Diaporama _diaporama;            // pointeurs vers les images du diaporama
-    unsigned int _posImageCourante;  /* position, dans le diaporama,
-                                        de l'image courante.
-                                        Indéfini quand diaporama vide.
-                                        Démarre à 0 quand diaporama non vide */
-private:
-    unsigned int numDiaporamaCourant();
-    void changerDiaporama(unsigned int pNumDiaporama);
-    unsigned int nbImages();
 
 private slots:
     void chargerDiaporama();

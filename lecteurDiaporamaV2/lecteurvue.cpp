@@ -11,6 +11,11 @@ LecteurVue::LecteurVue(QWidget *parent)
     , ui(new Ui::LecteurVue)
 {
     ui->setupUi(this);
+    ui->pDroite->setEnabled(false);
+    ui->pGauche->setEnabled(false);
+    ui->pLecture->setEnabled(false);
+    ui->pPause->setEnabled(false);
+    ui->pCategorie->setEnabled(false);
     connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
     connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
@@ -33,69 +38,25 @@ LecteurVue::~LecteurVue()
 void LecteurVue::chargerDiaporama()
 {
     qDebug() << "Je charge le diaporama" << Qt::endl;
-    /* Chargement des images associées au diaporama courant
-       Dans une version ultérieure, ces données proviendront d'une base de données,
-       et correspondront au diaporama choisi */
-    Image* imageACharger;
-    imageACharger = new Image(3, "personne", "Blanche Neige", "C:\\cartesDisney\\carteDisney2.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(2, "personne", "Cendrillon", "C:\\cartesDisney\\carteDisney4.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(4, "animal", "Mickey", "C:\\cartesDisney\\carteDisney1.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(1, "personne", "Grincheux", "C:\\cartesDisney\\carteDisney1.gif");
-    _diaporama.push_back(imageACharger);
-
-
-     // trier le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
-     // A FAIRE
-
-    int n = _diaporama.size();
-    for (int i = 0; i < n-1; i++) {
-        for (int j = 0; j < n-i-1; j++) {
-            if (_diaporama[j]->getRang() > _diaporama[j+1]->getRang()) {
-                Image* temp = _diaporama[j];
-                _diaporama[j] = _diaporama[j+1];
-                _diaporama[j+1] = temp;
-            }
-        }
-    }
-
-     _posImageCourante = 0;
-
-     cout << "Diaporama num. " << numDiaporamaCourant() << " selectionne. " << endl;
-     cout << nbImages() << " images chargees dans le diaporama" << endl;
-}
-
-void LecteurVue::changerDiaporama(unsigned int pNumDiaporama)
-{
-    // s'il y a un diaporama courant, le vider, puis charger le nouveau Diaporama
-    if (numDiaporamaCourant() > 0)
-    {
-        viderDiaporama();
-    }
-    _numDiaporamaCourant = pNumDiaporama;
-    if (numDiaporamaCourant() > 0)
-    {
-        chargerDiaporama(); // charge le diaporama courant
-    }
+    _lecteur.changerDiaporama(1);
+    ui->labelImage->setPixmap(QPixmap(":/cartesDisney/images/cartesDisney/Disney_0.gif"));
+    ui->pDroite->setEnabled(true);
+    ui->pGauche->setEnabled(true);
+    ui->pLecture->setEnabled(true);
+    ui->pPause->setEnabled(true);
+    ui->pCategorie->setEnabled(true);
 }
 
 void LecteurVue::viderDiaporama()
 {
     qDebug() << "J'enlève le diaporama" << Qt::endl;
-    if (nbImages () > 0)
-    {
-        unsigned int taille = nbImages();
-        for (unsigned int i = 0; i < taille ; i++)
-        {
-            _diaporama.pop_back(); /* Removes the last element in the vector,
-                                      effectively reducing the container size by one.
-                                      AND deletes the removed element */
-        }
-     _posImageCourante = 0;
-    }
-    cout << nbImages() << " images restantes dans le diaporama." << endl;
+    _lecteur.changerDiaporama(0);
+    ui->pDroite->setEnabled(false);
+    ui->pGauche->setEnabled(false);
+    ui->pLecture->setEnabled(false);
+    ui->pPause->setEnabled(false);
+    ui->pCategorie->setEnabled(false);
+    ui->labelImage->setPixmap(QPixmap("-----"));
 
 }
 
@@ -126,13 +87,23 @@ void LecteurVue::aProposDe()
 void LecteurVue::passerAuSuivant()
 {
     qDebug() <<  "Je passe à la diapositive suivante" << Qt::endl;
-    _posImageCourante++;
+//    QString nomImage = ":/cartesDisney/images/cartesDisney/Disney_";
+//    nomImage.append(QString::number(_posImageCourante));
+//    nomImage.append(".gif");
+//    qDebug() << nomImage;
+//    ui->labelImage->setPixmap(QPixmap(nomImage));
+    _lecteur.avancer();
 }
 
 void LecteurVue::passerAuPrecedent()
 {
     qDebug() <<  "Je passe à la diapositive précédente" << Qt::endl;
-    _posImageCourante--;
+//    QString nomImage = ":/cartesDisney/images/cartesDisney/Disney_";
+//    nomImage.append(QString::number(_lecteur.imageCourante()));
+//    nomImage.append(".gif");
+//    qDebug() << nomImage;
+//    ui->labelImage->setPixmap(QPixmap(nomImage));
+    _lecteur.reculer();
 }
 
 void LecteurVue::lecture()
@@ -148,15 +119,5 @@ void LecteurVue::pause()
 void LecteurVue::choisirCategorie()
 {
     qDebug() <<  "j'affiche les catégories" << Qt::endl;
-}
-
-unsigned int LecteurVue::numDiaporamaCourant()
-{
-    return _posImageCourante;
-}
-
-unsigned int LecteurVue::nbImages()
-{
-    return _diaporama.size();
 }
 
