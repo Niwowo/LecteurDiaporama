@@ -21,7 +21,7 @@ class LecteurVue : public QMainWindow
 public:
     LecteurVue(QWidget *parent = nullptr);
     ~LecteurVue();
-    QTimer *timer;
+    QTimer *timer = new QTimer(this);
 
 private:
     Ui::LecteurVue *ui;
