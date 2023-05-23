@@ -51,17 +51,23 @@ void Lecteur::chargerDiaporama()
     /* Chargement des images associées au diaporama courant
        Dans une version ultérieure, ces données proviendront d'une base de données,
        et correspondront au diaporama choisi */
+    openDataBase();
     Image* imageACharger;
-    imageACharger = new Image(3, "personne", "Alice", ":/cartesDisney/images/cartesDisney/Disney_2.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(2, "animal", "Chiengue", ":/cartesDisney/images/cartesDisney/Disney_1.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(4, "animal", "Bambi", ":/cartesDisney/images/cartesDisney/Disney_3.gif");
-    _diaporama.push_back(imageACharger);
-    imageACharger = new Image(1, "autre", "Chateau de Disney", ":/cartesDisney/images/cartesDisney/Disney_0.gif");
-    _diaporama.push_back(imageACharger);
-
-
+    QSqlQuery query;
+    query.exec("SELECT * FROM Diapos");
+    for(int i = 0; query.next(); i++)
+    {
+        qDebug() << query.value(1).toString() << query.value(3).toString();
+        unsigned int rang = query.value(0).toInt();
+        QString nomCategorie = query.value(2).toString();
+        string nomCategorieImage = nomCategorie.toStdString();
+        QString nom = query.value(1).toString();
+        string nomImage = nom.toStdString();
+        QString cheminAcces = query.value(3).toString();
+        string cheminAccesImage = ":/cartesDisney/images/" + cheminAcces.toStdString();
+        imageACharger = new Image(rang, nomCategorieImage, nomImage, cheminAccesImage);
+        _diaporama.push_back(imageACharger);
+    }
      // trier le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
      // A FAIRE
 
@@ -96,7 +102,7 @@ void Lecteur::viderDiaporama()
      _posImageCourante = 0;
     }
     cout << nbImages() << " images restantes dans le diaporama." << endl;
-
+    closeDataBase();
 }
 
 void Lecteur::afficher()
@@ -137,4 +143,19 @@ Image *Lecteur::imageCourante()
 unsigned int Lecteur::numDiaporamaCourant()
 {
     return _numDiaporamaCourant;
+}
+
+bool Lecteur::openDataBase()
+{
+    mydb = QSqlDatabase::addDatabase(CONNECT_TYPE);
+    mydb.setHostName("lakartxela.iutbayonne.univ-pau.fr");
+    mydb.setDatabaseName(DATABASE_NAME);
+    mydb.setUserName("nelduayen_bd");
+    mydb.setPassword("nelduayen_bd");
+    return mydb.open();
+}
+
+void Lecteur::closeDataBase()
+{
+    mydb.close();
 }

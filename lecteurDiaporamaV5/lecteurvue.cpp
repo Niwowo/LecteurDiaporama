@@ -100,7 +100,7 @@ void LecteurVue::aProposDe()
     qDebug() << "J'affiche le A Propos de" << Qt::endl;
     QMessageBox *msgBox = new QMessageBox();
     msgBox->setStandardButtons(QMessageBox::Ok);
-    msgBox->setText("Version de l'application : v4 \nDate de création : 27/04/2023 \nAuteurs : BURASOVITCH Ewan, ELDUAYEN Néo, ZAZA Souleymen");
+    msgBox->setText("Version de l'application : v5 \nDate de création : 27/04/2023 \nAuteurs : BURASOVITCH Ewan, ELDUAYEN Néo, ZAZA Souleymen");
     msgBox->exec();
 }
 

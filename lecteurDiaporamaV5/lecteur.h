@@ -1,7 +1,12 @@
 #ifndef LECTEUR_H
 #define LECTEUR_H
 #include "image.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
 #include <vector>
+
+#define DATABASE_NAME "BD_Nodenot_SAE"
+#define CONNECT_TYPE "QODBC"
 
 typedef vector<Image*> Diaporama;   // Structure de données contenant les infos sur les images
 
@@ -16,6 +21,8 @@ public:
     unsigned int nbImages();    // affiche la taille de _diaporama
     Image* imageCourante();     // retourne le pointeur vers l'image courante
     unsigned int numDiaporamaCourant();
+    bool openDataBase();
+    void closeDataBase();
 
 private:
     unsigned _numDiaporamaCourant;   // numéro du diaporama courant, par défaut 0
@@ -24,6 +31,7 @@ private:
                                         de l'image courante.
                                         Indéfini quand diaporama vide.
                                         Démarre à 0 quand diaporama non vide */
+    QSqlDatabase mydb;
 private:
     void chargerDiaporama();    // charge dans _diaporama les images du _numDiaporamaCourant
     void viderDiaporama();      // vide _diaporama de tous ses objets image et les delete

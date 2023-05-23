@@ -7,9 +7,7 @@
 #include <QWidget>
 #include <vector>
 #include <QTimer>
-#include <QSqlDatabase>
 
-DATABASE_NAME = BD_Nodenot_Lakartxela
 typedef std::vector<Image*> Diaporama;
 
 QT_BEGIN_NAMESPACE
