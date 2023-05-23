@@ -54,10 +54,10 @@ void Lecteur::chargerDiaporama()
     openDataBase();
     Image* imageACharger;
     QSqlQuery query;
-    query.exec("SELECT * FROM Diapos");
+    query.exec("SELECT idphoto, titrePhoto, F.nomFamille, uriPhoto FROM Diapos INNER JOIN Familles F ON Diapos.idFam = F.idFamille");
     for(int i = 0; query.next(); i++)
     {
-        qDebug() << query.value(1).toString() << query.value(3).toString();
+        qDebug() << query.value(1).toString() << query.value(2).toString() << query.value(3).toString();
         unsigned int rang = query.value(0).toInt();
         QString nomCategorie = query.value(2).toString();
         string nomCategorieImage = nomCategorie.toStdString();
