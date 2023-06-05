@@ -17,6 +17,7 @@ LecteurVue::LecteurVue(QWidget *parent)
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
 
+    // Connexions des signaux et slots
     connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
     connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
@@ -50,6 +51,7 @@ void LecteurVue::chargerDiaporama()
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
 
+    // Mise à jour de l'interface utilisateur
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
     ui->lRang->setNum(imageRang);
@@ -66,6 +68,7 @@ void LecteurVue::viderDiaporama()
 {
     timer->stop();
 
+    // Réinitialisation de l'interface utilisateur
     ui->lTitreImage->setText("Titre de l'image");
     ui->lCategorie->setText("");
     ui->labelImage->setPixmap(QPixmap(""));
@@ -114,6 +117,7 @@ void LecteurVue::passerAuSuivant()
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
 
+    // Mise à jour de l'interface utilisateur
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
     ui->lRang->setNum(imageRang);
@@ -131,6 +135,7 @@ void LecteurVue::passerAuPrecedent()
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
 
+    // Mise à jour de l'interface utilisateur
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
     ui->lRang->setNum(imageRang);
@@ -147,7 +152,7 @@ void LecteurVue::lecture()
 {
     if(timer->isActive())
     {
-        qDebug() << "Le timer est  déjà lancé";
+        qDebug() << "Le timer est déjà lancé";
     }
     else
     {
@@ -171,4 +176,3 @@ void LecteurVue::choisirCategorie()
 {
     qDebug() <<  "j'affiche les catégories" << Qt::endl;
 }
-
