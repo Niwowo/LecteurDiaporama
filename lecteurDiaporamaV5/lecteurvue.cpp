@@ -11,19 +11,21 @@ LecteurVue::LecteurVue(QWidget *parent)
     , ui(new Ui::LecteurVue)
 {
     ui->setupUi(this);
+    // Désactiver les boutons et les actions initialement
     ui->pDroite->setEnabled(false);
     ui->pGauche->setEnabled(false);
     ui->pLecture->setEnabled(false);
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
 
-    connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
-    connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
-    connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
-    connect(ui->actionx0_5,SIGNAL(triggered()),this,SLOT(vitesseX0_5()));
-    connect(ui->actionx1, SIGNAL(triggered()),this,SLOT(vitesseX1()));
-    connect(ui->actionx2, SIGNAL(triggered()),this,SLOT(vitesseX2()));
-    connect(ui->actionA_propos_de, SIGNAL(triggered()),this,SLOT(aProposDe()));
+    // Connexions des signaux et des slots
+    connect(ui->actionQuitter, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
+    connect(ui->actionCharger_diaporama, SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
+    connect(ui->actionEnlever_diaporama, SIGNAL(triggered()), this, SLOT(viderDiaporama()));
+    connect(ui->actionx0_5, SIGNAL(triggered()), this, SLOT(vitesseX0_5()));
+    connect(ui->actionx1, SIGNAL(triggered()), this, SLOT(vitesseX1()));
+    connect(ui->actionx2, SIGNAL(triggered()), this, SLOT(vitesseX2()));
+    connect(ui->actionA_propos_de, SIGNAL(triggered()), this, SLOT(aProposDe()));
     connect(ui->pLecture, SIGNAL(clicked()), this, SLOT(lecture()));
     connect(ui->pPause, SIGNAL(clicked()), this, SLOT(pause()));
     connect(ui->pDroite, SIGNAL(clicked()), this, SLOT(passerAuSuivant()));
@@ -45,6 +47,8 @@ void LecteurVue::chargerDiaporama()
     qDebug() << "Je charge le diaporama" << Qt::endl;
     _lecteur.changerDiaporama(1);
     Image *image = _lecteur.imageCourante();
+
+    // Afficher les informations de l'image dans l'interface utilisateur
     QString imageAffichee = QString::fromStdString(image->getChemin());
     QString imageCategorie = QString::fromStdString(image->getCategorie());
     QString imageTitre = QString::fromStdString(image->getTitre());
@@ -55,6 +59,8 @@ void LecteurVue::chargerDiaporama()
     ui->lRang->setNum(imageRang);
     ui->labelImage->setPixmap(QPixmap(imageAffichee));
     ui->statusbar->showMessage(imageAffichee);
+
+    // Activer les boutons et les actions appropriés
     ui->pDroite->setEnabled(true);
     ui->pGauche->setEnabled(true);
     ui->pLecture->setEnabled(true);
@@ -66,13 +72,17 @@ void LecteurVue::viderDiaporama()
 {
     timer->stop();
 
+    // Réinitialiser l'interface utilisateur
     ui->lTitreImage->setText("Titre de l'image");
     ui->lCategorie->setText("");
     ui->labelImage->setPixmap(QPixmap(""));
     ui->lRang->setNum(0);
     ui->statusbar->showMessage("");
+
     qDebug() << "J'enlève le diaporama" << Qt::endl;
     _lecteur.changerDiaporama(0);
+
+    // Désactiver les boutons et les actions
     ui->pDroite->setEnabled(false);
     ui->pGauche->setEnabled(false);
     ui->pLecture->setEnabled(false);
@@ -98,6 +108,7 @@ void LecteurVue::vitesseX2()
 void LecteurVue::aProposDe()
 {
     qDebug() << "J'affiche le A Propos de" << Qt::endl;
+    // Afficher une boîte de message avec les informations sur l'application
     QMessageBox *msgBox = new QMessageBox();
     msgBox->setStandardButtons(QMessageBox::Ok);
     msgBox->setText("Version de l'application : v5 \nDate de création : 27/04/2023 \nAuteurs : BURASOVITCH Ewan, ELDUAYEN Néo, ZAZA Souleymen");
@@ -109,6 +120,8 @@ void LecteurVue::passerAuSuivant()
     qDebug() <<  "Je passe à la diapositive suivante" << Qt::endl;
     _lecteur.avancer();
     Image *image = _lecteur.imageCourante();
+
+    // Afficher les informations de la nouvelle image
     QString imageAffichee = QString::fromStdString(image->getChemin());
     QString imageCategorie = QString::fromStdString(image->getCategorie());
     QString imageTitre = QString::fromStdString(image->getTitre());
@@ -126,6 +139,8 @@ void LecteurVue::passerAuPrecedent()
     qDebug() <<  "Je passe à la diapositive précédente" << Qt::endl;
     _lecteur.reculer();
     Image *image = _lecteur.imageCourante();
+
+    // Afficher les informations de la nouvelle image
     QString imageAffichee = QString::fromStdString(image->getChemin());
     QString imageCategorie = QString::fromStdString(image->getCategorie());
     QString imageTitre = QString::fromStdString(image->getTitre());
@@ -145,9 +160,9 @@ void LecteurVue::modeAuto()
 
 void LecteurVue::lecture()
 {
-    if(timer->isActive())
+    if (timer->isActive())
     {
-        qDebug() << "Le timer est  déjà lancé";
+        qDebug() << "Le timer est déjà lancé";
     }
     else
     {
@@ -171,4 +186,3 @@ void LecteurVue::choisirCategorie()
 {
     qDebug() <<  "j'affiche les catégories" << Qt::endl;
 }
-
