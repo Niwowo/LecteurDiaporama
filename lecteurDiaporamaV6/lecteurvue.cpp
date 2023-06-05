@@ -11,25 +11,29 @@ LecteurVue::LecteurVue(QWidget *parent)
     , ui(new Ui::LecteurVue)
 {
     ui->setupUi(this);
+
+    // Désactiver les boutons et actions qui ne doivent pas être disponibles au départ
     ui->pDroite->setEnabled(false);
     ui->pGauche->setEnabled(false);
     ui->pLecture->setEnabled(false);
     ui->pPause->setEnabled(false);
     ui->pCategorie->setEnabled(false);
 
-    connect(ui->actionQuitter,SIGNAL(triggered()),QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
-    connect(ui->actionCharger_diaporama,SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
-    connect(ui->actionEnlever_diaporama,SIGNAL(triggered()), this, SLOT(viderDiaporama()));
-    connect(ui->actionx0_5,SIGNAL(triggered()),this,SLOT(vitesseX0_5()));
-    connect(ui->actionx1, SIGNAL(triggered()),this,SLOT(vitesseX1()));
-    connect(ui->actionx2, SIGNAL(triggered()),this,SLOT(vitesseX2()));
-    connect(ui->actionA_propos_de, SIGNAL(triggered()),this,SLOT(aProposDe()));
+    // Connecter les signaux aux slots correspondants
+    connect(ui->actionQuitter, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
+    connect(ui->actionCharger_diaporama, SIGNAL(triggered()), this, SLOT(chargerDiaporama()));
+    connect(ui->actionEnlever_diaporama, SIGNAL(triggered()), this, SLOT(viderDiaporama()));
+    connect(ui->actionx0_5, SIGNAL(triggered()), this, SLOT(vitesseX0_5()));
+    connect(ui->actionx1, SIGNAL(triggered()), this, SLOT(vitesseX1()));
+    connect(ui->actionx2, SIGNAL(triggered()), this, SLOT(vitesseX2()));
+    connect(ui->actionA_propos_de, SIGNAL(triggered()), this, SLOT(aProposDe()));
     connect(ui->pLecture, SIGNAL(clicked()), this, SLOT(lecture()));
     connect(ui->pPause, SIGNAL(clicked()), this, SLOT(pause()));
     connect(ui->pDroite, SIGNAL(clicked()), this, SLOT(passerAuSuivant()));
     connect(ui->pGauche, SIGNAL(clicked()), this, SLOT(passerAuPrecedent()));
     connect(ui->pCategorie, SIGNAL(clicked()), this, SLOT(choisirCategorie()));
 
+    // Connecter le signal timeout du timer au slot modeAuto
     timer->connect(timer, SIGNAL(timeout()), this, SLOT(modeAuto()));
 }
 
@@ -51,6 +55,7 @@ void LecteurVue::chargerDiaporama()
     int imageRang = image->getRang();
     QString titreDiaporama = QString::fromStdString(_lecteur.diaporamaCourant->getTitreDiaporama());
 
+    // Mettre à jour l'interface utilisateur avec les informations du diaporama chargé
     ui->lTitre->setText(titreDiaporama);
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
@@ -68,6 +73,7 @@ void LecteurVue::viderDiaporama()
 {
     timer->stop();
 
+    // Réinitialiser les éléments de l'interface utilisateur
     ui->lTitreImage->setText("Titre de l'image");
     ui->lTitre->setText("Titre du Diaporama");
     ui->lCategorie->setText("Catégorie");
@@ -85,16 +91,19 @@ void LecteurVue::viderDiaporama()
 
 void LecteurVue::vitesseX0_5()
 {
+    // Définir l'intervalle du timer pour une vitesse de lecture de 0.5x
     timer->setInterval(6000);
 }
 
 void LecteurVue::vitesseX1()
 {
+    // Définir l'intervalle du timer pour une vitesse de lecture de 1x
     timer->setInterval(3000);
 }
 
 void LecteurVue::vitesseX2()
 {
+    // Définir l'intervalle du timer pour une vitesse de lecture de 2x
     timer->setInterval(1500);
 }
 
@@ -117,6 +126,7 @@ void LecteurVue::passerAuSuivant()
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
 
+    // Mettre à jour l'interface utilisateur avec les informations de l'image suivante
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
     ui->lRang->setNum(imageRang);
@@ -134,6 +144,7 @@ void LecteurVue::passerAuPrecedent()
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
 
+    // Mettre à jour l'interface utilisateur avec les informations de l'image précédente
     ui->lTitreImage->setText(imageTitre);
     ui->lCategorie->setText(imageCategorie);
     ui->lRang->setNum(imageRang);
@@ -150,28 +161,29 @@ void LecteurVue::lecture()
 {
     if(timer->isActive())
     {
-        qDebug() << "Le timer est  déjà lancé";
+        qDebug() << "Le timer est déjà lancé";
     }
     else
     {
+        // Définir la vitesse de lecture à 1x et démarrer le timer
         vitesseX1();
         ui->pDroite->setEnabled(false);
         ui->pGauche->setEnabled(false);
-        qDebug() <<  "je lance la lecture" << Qt::endl;
+        qDebug() <<  "Je lance la lecture" << Qt::endl;
         timer->start();
     }
 }
 
 void LecteurVue::pause()
 {
+    // Arrêter le timer et réactiver les boutons de navigation
     timer->stop();
     ui->pDroite->setEnabled(true);
     ui->pGauche->setEnabled(true);
-    qDebug() <<  "je met en pause" << Qt::endl;
+    qDebug() <<  "Je mets en pause" << Qt::endl;
 }
 
 void LecteurVue::choisirCategorie()
 {
-    qDebug() <<  "j'affiche les catégories" << Qt::endl;
+    qDebug() <<  "J'affiche les catégories" << Qt::endl;
 }
-
