@@ -82,17 +82,17 @@ void LecteurVue::viderDiaporama()
 
 void LecteurVue::vitesseX0_5()
 {
-
+    // Logique pour définir la vitesse de lecture à x0.5
 }
 
 void LecteurVue::vitesseX1()
 {
-
+    // Logique pour définir la vitesse de lecture à x1
 }
 
 void LecteurVue::vitesseX2()
 {
-
+    // Logique pour définir la vitesse de lecture à x2
 }
 
 void LecteurVue::aProposDe()
@@ -147,14 +147,14 @@ void LecteurVue::lecture()
 {
     if(timer->isActive())
     {
-        qDebug() << "Le timer est  déjà lancé";
+        qDebug() << "Le timer est déjà lancé";
     }
     else
     {
         vitesseX1();
         ui->pDroite->setEnabled(false);
         ui->pGauche->setEnabled(false);
-        qDebug() <<  "je lance la lecture" << Qt::endl;
+        qDebug() <<  "Je lance la lecture" << Qt::endl;
         timer->start(3000);
     }
 }
@@ -164,11 +164,10 @@ void LecteurVue::pause()
     timer->stop();
     ui->pDroite->setEnabled(true);
     ui->pGauche->setEnabled(true);
-    qDebug() <<  "je met en pause" << Qt::endl;
+    qDebug() <<  "Je mets en pause" << Qt::endl;
 }
 
 void LecteurVue::choisirCategorie()
 {
-    qDebug() <<  "j'affiche les catégories" << Qt::endl;
+    qDebug() <<  "J'affiche les catégories" << Qt::endl;
 }
-
