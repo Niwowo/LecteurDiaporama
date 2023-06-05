@@ -53,7 +53,6 @@ void Lecteur::chargerDiaporama()
        et correspondront au diaporama choisi */
     openDataBase();
     Image* imageACharger;
-    Diaporama* diaporamaCourant;
     QSqlQuery query;
     query.exec("SELECT idphoto, titrePhoto, F.nomFamille, uriPhoto, D.`titre Diaporama`, D.idDiaporama, D.vitesseDefilement FROM Diapos INNER JOIN Familles F ON Diapos.idFam = F.idFamille INNER JOIN DiaposDansDiaporama DDD ON Diapos.idphoto = DDD.idDiapo INNER JOIN Diaporamas D ON DDD.idDiaporama = D.idDiaporama WHERE D.idDiaporama = 3;");
     for(int i = 0; query.next(); i++)
@@ -62,7 +61,7 @@ void Lecteur::chargerDiaporama()
         {
             QString titreDiapo = query.value(4).toString();
             string titreDiaporama = titreDiapo.toStdString();
-            unsigned int idDiaporama= query.value(5).toInt();
+            unsigned int idDiaporama = query.value(5).toInt();
             unsigned int vitesseDefilement = query.value(6).toInt();
             diaporamaCourant = new Diaporama(idDiaporama, titreDiaporama, vitesseDefilement);
         }
@@ -75,21 +74,12 @@ void Lecteur::chargerDiaporama()
         QString cheminAcces = query.value(3).toString();
         string cheminAccesImage = ":/cartesDisney/images/" + cheminAcces.toStdString();
         imageACharger = new Image(rang, nomCategorieImage, nomImage, cheminAccesImage);
-        _diaporama.push_back(imageACharger);
+        _diaporama._diaporama.push_back(imageACharger);
     }
      // trier le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
      // A FAIRE
 
-    int n = _diaporama.size();
-    for (int i = 0; i < n-1; i++) {
-        for (int j = 0; j < n-i-1; j++) {
-            if (_diaporama[j]->getRang() > _diaporama[j+1]->getRang()) {
-                Image* temp = _diaporama[j];
-                _diaporama[j] = _diaporama[j+1];
-                _diaporama[j+1] = temp;
-            }
-        }
-    }
+    _diaporama.trier();
 
      _posImageCourante = 0;
 
@@ -104,9 +94,7 @@ void Lecteur::viderDiaporama()
         unsigned int taille = nbImages();
         for (unsigned int i = 0; i < taille ; i++)
         {
-            _diaporama.pop_back(); /* Removes the last element in the vector,
-                                      effectively reducing the container size by one.
-                                      AND deletes the removed element */
+            _diaporama.enleverImage();
         }
      _posImageCourante = 0;
     }
@@ -128,7 +116,7 @@ void Lecteur::afficher()
      if (nbImages() > 0)
      {
             cout << "Image courante : " << endl;
-            _diaporama[_posImageCourante]->afficher();
+            // _diaporama[_posImageCourante].afficher();
      }
      else
      {
@@ -141,12 +129,12 @@ void Lecteur::afficher()
 
 unsigned int Lecteur::nbImages()
 {
-    return _diaporama.size();
+    return _diaporama.nbImages();
 }
 
 Image *Lecteur::imageCourante()
 {
-    return _diaporama[_posImageCourante];
+    return _diaporama.imageCourante(_posImageCourante);
 }
 
 unsigned int Lecteur::numDiaporamaCourant()

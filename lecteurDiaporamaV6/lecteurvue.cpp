@@ -49,8 +49,7 @@ void LecteurVue::chargerDiaporama()
     QString imageCategorie = QString::fromStdString(image->getCategorie());
     QString imageTitre = QString::fromStdString(image->getTitre());
     int imageRang = image->getRang();
-    qDebug() << query.value(4).toString();
-    QString titreDiaporama = query.value(4).toString();
+    QString titreDiaporama = QString::fromStdString(_lecteur.diaporamaCourant->getTitreDiaporama());
 
     ui->lTitre->setText(titreDiaporama);
     ui->lTitreImage->setText(imageTitre);
@@ -70,7 +69,8 @@ void LecteurVue::viderDiaporama()
     timer->stop();
 
     ui->lTitreImage->setText("Titre de l'image");
-    ui->lCategorie->setText("");
+    ui->lTitre->setText("Titre du Diaporama");
+    ui->lCategorie->setText("Catégorie");
     ui->labelImage->setPixmap(QPixmap(""));
     ui->lRang->setNum(0);
     ui->statusbar->showMessage("");

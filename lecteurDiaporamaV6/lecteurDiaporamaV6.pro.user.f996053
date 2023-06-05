@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.2, 2023-06-05T09:50:12. -->
+<!-- Written by QtCreator 7.0.2, 2023-05-25T12:31:10. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{51259ed8-edbe-4f94-b209-cde93dfb5f64}</value>
+  <value type="QByteArray">{f9960534-ae65-4e17-9f4f-e1d8d61fbe62}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -158,12 +158,14 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:F:/Documents/Annee_1/S2/S2_01_Dev_Application/v6/lecteurDiaporamaV6/lecteurDiaporamaV6.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">F:/Documents/Annee_1/S2/S2_01_Dev_Application/v6/lecteurDiaporamaV6/lecteurDiaporamaV6.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">F:/Documents/Annee_1/S2/S2_01_Dev_Application/v6/build-lecteurDiaporamaV6-Desktop_Qt_6_3_1_MinGW_64_bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

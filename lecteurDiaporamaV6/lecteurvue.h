@@ -24,7 +24,7 @@ public:
 private:
     Ui::LecteurVue *ui;
     Lecteur _lecteur;
-
+    Diaporama _diaporama;
 
 private slots:
     void modeAuto();

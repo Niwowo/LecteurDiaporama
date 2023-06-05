@@ -9,8 +9,6 @@
 #define DATABASE_NAME "BD_Nodenot_SAE"
 #define CONNECT_TYPE "QODBC"
 
-typedef vector<Image*> Diaporama2;   // Structure de données contenant les infos sur les images
-
 class Lecteur
 {
 public:
@@ -24,16 +22,16 @@ public:
     unsigned int numDiaporamaCourant();
     bool openDataBase();
     void closeDataBase();
+    Diaporama* diaporamaCourant;
 
 private:
     unsigned _numDiaporamaCourant;   // numéro du diaporama courant, par défaut 0
-    Diaporama2 _diaporama;            // pointeurs vers les images du diaporama
+    Diaporama _diaporama;            // pointeurs vers les images du diaporama
     unsigned int _posImageCourante;  /* position, dans le diaporama,
                                         de l'image courante.
                                         Indéfini quand diaporama vide.
                                         Démarre à 0 quand diaporama non vide */
     QSqlDatabase mydb;
-    Diaporama _diaporamaTest;
 private:
     void chargerDiaporama();    // charge dans _diaporama les images du _numDiaporamaCourant
     void viderDiaporama();      // vide _diaporama de tous ses objets image et les delete
