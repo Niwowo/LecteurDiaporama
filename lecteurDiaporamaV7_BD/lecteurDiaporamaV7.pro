@@ -9,23 +9,31 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    choixcategorie.cpp \
     choixdiaporama.cpp \
+    database.cpp \
     diaporama.cpp \
     image.cpp \
     lecteur.cpp \
     main.cpp \
-    lecteurvue.cpp
+    lecteurvue.cpp \
+    modifierdiaporama.cpp
 
 HEADERS += \
+    choixcategorie.h \
     choixdiaporama.h \
+    database.h \
     diaporama.h \
     image.h \
     lecteur.h \
-    lecteurvue.h
+    lecteurvue.h \
+    modifierdiaporama.h
 
 FORMS += \
+    choixcategorie.ui \
     choixdiaporama.ui \
-    lecteurvue.ui
+    lecteurvue.ui \
+    modifierdiaporama.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

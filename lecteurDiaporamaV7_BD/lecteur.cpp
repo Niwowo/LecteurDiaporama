@@ -51,42 +51,49 @@ void Lecteur::chargerDiaporama()
     /* Chargement des images associées au diaporama courant
        Dans une version ultérieure, ces données proviendront d'une base de données,
        et correspondront au diaporama choisi */
-    openDataBase();
+    mydb.openDataBase();
     Image* imageACharger;
     QSqlQuery query;
     choixDiaporama* maDlg = new choixDiaporama();
     int choix = maDlg->exec();
-    query.prepare("SELECT idphoto, titrePhoto, F.nomFamille, uriPhoto, D.`titre Diaporama`, D.idDiaporama, D.vitesseDefilement FROM Diapos INNER JOIN Familles F ON Diapos.idFam = F.idFamille INNER JOIN DiaposDansDiaporama DDD ON Diapos.idphoto = DDD.idDiapo INNER JOIN Diaporamas D ON DDD.idDiaporama = D.idDiaporama WHERE D.idDiaporama = ?");
-    query.addBindValue(choix);
-    query.exec();
-    for(int i = 0; query.next(); i++)
+    if(choix != 0)
     {
-        if(i == 1)
+        query.prepare("SELECT idphoto, titrePhoto, F.nomFamille, uriPhoto, D.`titre Diaporama`, D.idDiaporama, D.vitesseDefilement FROM Diapos INNER JOIN Familles F ON Diapos.idFam = F.idFamille INNER JOIN DiaposDansDiaporama DDD ON Diapos.idphoto = DDD.idDiapo INNER JOIN Diaporamas D ON DDD.idDiaporama = D.idDiaporama WHERE D.idDiaporama = ?");
+        query.addBindValue(choix);
+        query.exec();
+        for(int i = 0; query.next(); i++)
         {
-            QString titreDiapo = query.value(4).toString();
-            string titreDiaporama = titreDiapo.toStdString();
-            unsigned int idDiaporama = query.value(5).toInt();
-            unsigned int vitesseDefilement = query.value(6).toInt();
-            diaporamaCourant = new Diaporama(idDiaporama, titreDiaporama, vitesseDefilement);
+            if(i == 1)
+            {
+                QString titreDiapo = query.value(4).toString();
+                string titreDiaporama = titreDiapo.toStdString();
+                unsigned int idDiaporama = query.value(5).toInt();
+                unsigned int vitesseDefilement = query.value(6).toInt();
+                diaporamaCourant = new Diaporama(idDiaporama, titreDiaporama, vitesseDefilement);
+            }
+            qDebug() << query.value(1).toString() << query.value(2).toString() << query.value(3).toString() << query.value(4).toString();
+            unsigned int rang = query.value(0).toInt();
+            QString nomCategorie = query.value(2).toString();
+            string nomCategorieImage = nomCategorie.toStdString();
+            QString nom = query.value(1).toString();
+            string nomImage = nom.toStdString();
+            QString cheminAcces = query.value(3).toString();
+            string cheminAccesImage = ":/cartesDisney/images/" + cheminAcces.toStdString();
+            imageACharger = new Image(rang, nomCategorieImage, nomImage, cheminAccesImage);
+            _diaporama._diaporama.push_back(imageACharger);
         }
-        qDebug() << query.value(1).toString() << query.value(2).toString() << query.value(3).toString() << query.value(4).toString();
-        unsigned int rang = query.value(0).toInt();
-        QString nomCategorie = query.value(2).toString();
-        string nomCategorieImage = nomCategorie.toStdString();
-        QString nom = query.value(1).toString();
-        string nomImage = nom.toStdString();
-        QString cheminAcces = query.value(3).toString();
-        string cheminAccesImage = ":/cartesDisney/images/" + cheminAcces.toStdString();
-        imageACharger = new Image(rang, nomCategorieImage, nomImage, cheminAccesImage);
-        _diaporama._diaporama.push_back(imageACharger);
+        // Trie le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
+        _diaporama.trier();
+
+        _posImageCourante = 0;
+
+        cout << "Diaporama num. " << numDiaporamaCourant() << " sélectionné." << endl;
+        cout << nbImages() << " images chargées dans le diaporama" << endl;
     }
-    // Trie le contenu du diaporama par ordre croissant selon le rang de l'image dans le diaporama
-    _diaporama.trier();
-
-    _posImageCourante = 0;
-
-    cout << "Diaporama num. " << numDiaporamaCourant() << " sélectionné." << endl;
-    cout << nbImages() << " images chargées dans le diaporama" << endl;
+    else
+    {
+        qDebug() << "Aucun diaporama n'as été choisi" << Qt::endl;
+    }
 }
 
 void Lecteur::viderDiaporama()
@@ -101,7 +108,7 @@ void Lecteur::viderDiaporama()
         _posImageCourante = 0;
     }
     cout << nbImages() << " images restantes dans le diaporama." << endl;
-    closeDataBase();
+    mydb.closeDataBase();
 }
 
 void Lecteur::afficher()
@@ -143,17 +150,8 @@ unsigned int Lecteur::numDiaporamaCourant()
     return _numDiaporamaCourant;
 }
 
-bool Lecteur::openDataBase()
+unsigned int Lecteur::numImageCourante()
 {
-    mydb = QSqlDatabase::addDatabase(CONNECT_TYPE);
-    mydb.setHostName("lakartxela.iutbayonne.univ-pau.fr");
-    mydb.setDatabaseName(DATABASE_NAME);
-    mydb.setUserName("nelduayen_bd");
-    mydb.setPassword("nelduayen_bd");
-    return mydb.open();
+    return _posImageCourante;
 }
 
-void Lecteur::closeDataBase()
-{
-    mydb.close();
-}

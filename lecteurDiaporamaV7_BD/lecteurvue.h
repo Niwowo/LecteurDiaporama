@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "image.h"
 #include "lecteur.h"
+#include "choixcategorie.h"
+#include "modifierdiaporama.h"
 #include <QWidget>
 #include <vector>
 #include <QTimer>
@@ -25,6 +27,9 @@ private:
     Ui::LecteurVue *ui;                     // Interface utilisateur de la fenêtre principale
     Lecteur _lecteur;                        // Objet Lecteur pour gérer le diaporama
     Diaporama _diaporama;                // Diaporama actuel
+    QString selectedCategory = "Tout"; // La catégorie sélectionnée par l'utilisateur
+    bool pDroiteClicked = false;
+    bool pGaucheClicked = false;
 
 private slots:
     void modeAuto();                            // Mode automatique : passe à l'image suivante
@@ -39,6 +44,9 @@ private slots:
     void lecture();                                    // Démarre la lecture automatique
     void pause();                                       // Met en pause la lecture automatique
     void choisirCategorie();                    // Affiche les catégories d'images
+    void onpDroiteClicked();
+    void onpGaucheClicked();
+    void modifierDiaporama();
 };
 
 #endif // LECTEURVUE_H

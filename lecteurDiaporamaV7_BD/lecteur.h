@@ -3,13 +3,12 @@
 #include "image.h"
 #include "diaporama.h"
 #include "choixdiaporama.h"
+#include "choixcategorie.h"
+#include "database.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QInputDialog>
 #include <vector>
-
-#define DATABASE_NAME "BD_Nodenot_SAE"
-#define CONNECT_TYPE "QODBC"
 
 class Lecteur
 {
@@ -22,8 +21,7 @@ public:
     unsigned int nbImages();    // affiche la taille de _diaporama
     Image* imageCourante();     // retourne le pointeur vers l'image courante
     unsigned int numDiaporamaCourant();
-    bool openDataBase();
-    void closeDataBase();
+    unsigned int numImageCourante();
     Diaporama* diaporamaCourant;
 
 private:
@@ -33,7 +31,8 @@ private:
                                         de l'image courante.
                                         Indéfini quand diaporama vide.
                                         Démarre à 0 quand diaporama non vide */
-    QSqlDatabase mydb;
+    Database mydb;
+
 private:
     void chargerDiaporama();    // charge dans _diaporama les images du _numDiaporamaCourant
     void viderDiaporama();      // vide _diaporama de tous ses objets image et les delete

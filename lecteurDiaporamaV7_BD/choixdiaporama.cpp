@@ -10,7 +10,6 @@ choixDiaporama::choixDiaporama(QWidget *parent) :
     QSqlQuery query;
     QStringList header;
     header << "idDiaporama" << "titreDiaporama" << "vitesseDefilement" ;
-    // openDataBase();
     query.exec("SELECT * from Diaporamas");
     for(unsigned int i = 0; query.next(); i++)
     {
