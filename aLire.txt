@@ -1,0 +1,2 @@
+Les images devront être déposées dans le dossier image fournit avec chaque version. 
+De plus, le fichier contenant l'information d'où sont rangées les images est le fichier "cartesDisney.zip"
